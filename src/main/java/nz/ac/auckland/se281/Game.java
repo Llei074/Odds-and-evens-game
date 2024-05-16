@@ -7,18 +7,24 @@ import nz.ac.auckland.se281.Main.Difficulty;
 public class Game {
 
   private Integer roundNumber;
+  private String player;
 
   public void newGame(Difficulty difficulty, Choice choice, String[] options) {
-    MessageCli.WELCOME_PLAYER.printMessage(options[0]);
+    player = options[0];
     roundNumber = 1;
+
+    MessageCli.WELCOME_PLAYER.printMessage(player);
   }
 
   public void play() {
+    String input;
 
-
+    // Start the round 
     MessageCli.START_ROUND.printMessage(roundNumber.toString());
+
+    // Ask for input
     MessageCli.ASK_INPUT.printMessage();
-    String input = Utils.scanner.nextLine();
+    input = Utils.scanner.nextLine();
     switch (input) {
       case "0":
       case "1":
@@ -26,6 +32,7 @@ public class Game {
       case "3":
       case "4":
       case "5":
+        MessageCli.PRINT_INFO_HAND.printMessage(player, input);
         break;
       default:
         MessageCli.INVALID_INPUT.printMessage();
