@@ -1,10 +1,11 @@
 package nz.ac.auckland.se281;
 
 public class EasyBot implements Robot {
+  Strategy strategy = new RandomStrategy();
 
   @Override
   public String getRobotOutput() {
-    return Integer.toString(Utils.getRandomNumberRange(0, 5));
+    return strategy.getAction();
   }
 
   @Override
