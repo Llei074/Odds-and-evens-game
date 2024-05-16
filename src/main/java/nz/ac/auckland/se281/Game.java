@@ -20,11 +20,11 @@ public class Game {
     String input;
     Boolean loop = true;
 
-    // Start the round 
+    // Start the round
     MessageCli.START_ROUND.printMessage(roundNumber.toString());
 
     // Ask for input and repeat until valid input is given
-    while(loop) {
+    while (loop) {
       MessageCli.ASK_INPUT.printMessage();
       input = Utils.scanner.nextLine();
       switch (input) {
@@ -35,6 +35,7 @@ public class Game {
         case "4":
         case "5":
           MessageCli.PRINT_INFO_HAND.printMessage(player, input);
+          roundNumber++;
           loop = false;
           break;
         default:
