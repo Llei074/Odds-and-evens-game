@@ -14,7 +14,7 @@ public class Game {
   private Robot robot;
 
   public void newGame(Difficulty difficulty, Choice choice, String[] options) {
-    
+
     roundNumber = 0;
 
     player = options[0];
@@ -24,7 +24,7 @@ public class Game {
     robot = RobotFactory.chooseDifficulty(difficulty);
   }
 
-  public void play() {    
+  public void play() {
     roundNumber++;
     // Start the round
     MessageCli.START_ROUND.printMessage(Integer.toString(roundNumber));
@@ -34,7 +34,7 @@ public class Game {
     MessageCli.PRINT_INFO_HAND.printMessage(player, playerFingers);
 
     // Request for robot's input
-    robotFingers = robot.numberOuput();
+    robotFingers = robot.getRobotOutput();
     MessageCli.PRINT_INFO_HAND.printMessage(robot.getModel(), robotFingers);
   }
 
