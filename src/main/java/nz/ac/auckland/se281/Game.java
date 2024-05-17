@@ -94,7 +94,23 @@ public class Game {
 
   public void endGame() {}
 
-  public void showStats() {}
+  public void showStats() {
+    int robotWins = 0;
+
+    if (!gameRunning) {
+      MessageCli.GAME_NOT_STARTED.printMessage();
+      return;
+    }
+
+    for (String outcome : this.robotWins) {
+      if (outcome.equals("win")) {
+        robotWins++;
+      }
+    }
+
+    MessageCli.PRINT_PLAYER_WINS.printMessage(player, Integer.toString(roundNumber - robotWins), Integer.toString(robotWins));
+    MessageCli.PRINT_PLAYER_WINS.printMessage(robot.getModel(), Integer.toString(robotWins), Integer.toString(roundNumber - robotWins));
+  }
 
   public String askPlayerInput() {
     while (true) {
