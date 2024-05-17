@@ -5,8 +5,8 @@ import nz.ac.auckland.se281.Main.Choice;
 
 public class TopStrategy implements Strategy {
 
-  List<Choice> history;
-  Choice winningChoice;
+  private List<Choice> history;
+  private Choice winningChoice;
 
   public TopStrategy(List<Choice> history, Choice choice) {
     this.history = history;

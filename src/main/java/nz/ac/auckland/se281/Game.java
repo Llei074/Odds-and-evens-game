@@ -17,23 +17,35 @@ public class Game {
   private Choice choice;
   private List<Choice> history;
   private List<String> robotWins;
+  private boolean gameRunning = false;
 
   public void newGame(Difficulty difficulty, Choice choice, String[] options) {
 
+    // Set the game to running
+    gameRunning = true;
+
+    // Initialize the game
     history = new ArrayList<>();
     robotWins = new ArrayList<>();
     roundNumber = 0;
 
+    // Welcome the player
     player = options[0];
     MessageCli.WELCOME_PLAYER.printMessage(player);
 
     // Create the robot based on chosen difficulty
     robot = RobotFactory.chooseDifficulty(difficulty);
 
+    // Save the determining factor for the player to win
     this.choice = choice;
   }
 
   public void play() {
+
+    if (!gameRunning) {
+      MessageCli.GAME_NOT_STARTED.printMessage();
+      return;
+    }
 
     int sumOfValues;
 
@@ -54,11 +66,11 @@ public class Game {
     } else if (robot instanceof HardBot && roundNumber > 3) {
 
       // For hard difficulty we change the strategy based on the outcome of the previous round
-      if (robotWins.get(robotWins.size()-1).equals("Lose")) {
+      if (robotWins.get(robotWins.size() - 1).equals("Lose")) {
         // Check what strategy the robot is using and change it to the opposite
         if (((HardBot) robot).getStrategy() instanceof TopStrategy) {
           ((HardBot) robot).setStrategy(new RandomStrategy());
-        } else if (((HardBot) robot).getStrategy() instanceof RandomStrategy){
+        } else if (((HardBot) robot).getStrategy() instanceof RandomStrategy) {
           ((HardBot) robot).setStrategy(new TopStrategy(history, choice));
         }
       }
@@ -77,32 +89,7 @@ public class Game {
 
     // Check the outcome of the round
     sumOfValues = Integer.parseInt(playerFingers) + Integer.parseInt(robotFingers);
-    switch (choice) {
-      case EVEN:
-        // If sum is even, player wins
-        if (Utils.isEven(sumOfValues)) {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
-              Integer.toString(sumOfValues), "EVEN", player);
-          robotWins.add("Lose");
-        } else {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
-              Integer.toString(sumOfValues), "ODD", robot.getModel());
-          robotWins.add("Win");
-        }
-        break;
-
-      case ODD:
-        // If sum is odd, player wins
-        if (Utils.isOdd(sumOfValues)) {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sumOfValues), "ODD", player);
-          robotWins.add("Lose");
-        } else {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
-              Integer.toString(sumOfValues), "EVEN", robot.getModel());
-          robotWins.add("Win");
-        }
-        break;
-    }
+    robotWins.add(roundOutcome(sumOfValues));
   }
 
   public void endGame() {}
@@ -125,6 +112,36 @@ public class Game {
           MessageCli.INVALID_INPUT.printMessage();
           break;
       }
+    }
+  }
+
+  public String roundOutcome(int sumOfValues) {
+    switch (choice) {
+      case EVEN:
+        // If sum is even, player wins
+        if (Utils.isEven(sumOfValues)) {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
+              Integer.toString(sumOfValues), "EVEN", player);
+          return "Lose";
+        } else {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
+              Integer.toString(sumOfValues), "ODD", robot.getModel());
+          return "win";
+        }
+
+      case ODD:
+        // If sum is odd, player wins
+        if (Utils.isOdd(sumOfValues)) {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sumOfValues), "ODD", player);
+          return "Lose";
+        } else {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
+              Integer.toString(sumOfValues), "EVEN", robot.getModel());
+          return "win";
+        }
+      default:
+        // Inaccessable code
+        return "Draw";
     }
   }
 }
