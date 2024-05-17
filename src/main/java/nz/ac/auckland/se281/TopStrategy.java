@@ -38,8 +38,8 @@ public class TopStrategy implements Strategy {
     }
 
     switch (winningChoice) {
-        // For player to win they must have an Even outcome
       case EVEN:
+        // For player to win they must have an Even outcome
         // If we predict the player will choose an Odd number
         // We will choose an Even number
         if (oddChoiceCount > evenChoiceCount) {
@@ -47,8 +47,8 @@ public class TopStrategy implements Strategy {
         } else {
           return Integer.toString(Utils.getRandomOddNumber());
         }
-        // For player to win they must have an Odd outcome
       case ODD:
+        // For player to win they must have an Odd outcome
         // If we predict the player will choose an Odd number
         // We will choose an Odd number
         if (oddChoiceCount > evenChoiceCount) {
