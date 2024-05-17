@@ -48,7 +48,7 @@ public class Game {
     this.choice = choice;
   }
 
-  /** Plays a round of the game */
+  /** Plays a round of the game. */
   public void play() {
 
     if (!gameRunning) {
@@ -114,7 +114,7 @@ public class Game {
     printPlayerWins();
   }
 
-  /** Prints the current stats in an active game */
+  /** Prints the current stats in an active game. */
   public void showStats() {
     if (!gameRunning) {
       MessageCli.GAME_NOT_STARTED.printMessage();
@@ -124,7 +124,7 @@ public class Game {
   }
 
   /**
-   * Asks the player for their round input and returns only when a valid input is given
+   * Asks the player for their round input and returns only when a valid input is given.
    *
    * @return the player's input between 0 and 5 inclusive
    */
@@ -149,7 +149,7 @@ public class Game {
   }
 
   /**
-   * Determines the outcome of the round based on the player's choice
+   * Determines the outcome of the round based on the player's choice.
    *
    * @param sumOfValues the sum of the player and robot's inputs
    * @return the outcome of the round
@@ -186,7 +186,7 @@ public class Game {
 
   /**
    * Prints the wins and losses of each player and the game ending promt if the current game has
-   * finished
+   * finished.
    */
   public void printPlayerWins() {
 

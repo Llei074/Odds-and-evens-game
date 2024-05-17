@@ -22,7 +22,7 @@ public class TopStrategy implements Strategy {
 
   /**
    * getAction returns a number based on the history of the player and the choice determining
-   * whether the player wins
+   * whether the player wins.
    */
   public String getAction() {
     int evenChoiceCount = 0;
