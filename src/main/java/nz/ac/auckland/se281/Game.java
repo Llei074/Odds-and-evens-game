@@ -109,7 +109,6 @@ public class Game {
       MessageCli.GAME_NOT_STARTED.printMessage();
       return;
     }
-
     printPlayerWins();
   }
 
@@ -117,6 +116,7 @@ public class Game {
     while (true) {
       MessageCli.ASK_INPUT.printMessage();
       String input = Utils.scanner.nextLine();
+      // Check if the input is between 0 and 5 inclusive
       switch (input) {
         case "0":
         case "1":
@@ -163,6 +163,8 @@ public class Game {
   }
 
   public void printPlayerWins() {
+
+    // Recored number of robot wins
     int robotWins = 0;
     for (String outcome : this.robotWins) {
       if (outcome.equals("win")) {
@@ -170,9 +172,20 @@ public class Game {
       }
     }
 
+    // Player wins can be calculated by subtracting robot wins from the total number of rounds
     MessageCli.PRINT_PLAYER_WINS.printMessage(
         player, Integer.toString(roundNumber - robotWins), Integer.toString(robotWins));
     MessageCli.PRINT_PLAYER_WINS.printMessage(
         robot.getModel(), Integer.toString(robotWins), Integer.toString(roundNumber - robotWins));
+
+    if (!gameRunning) {
+      if (robotWins > roundNumber - robotWins) {
+        MessageCli.PRINT_END_GAME.printMessage(robot.getModel());
+      } else if (robotWins < roundNumber - robotWins) {
+        MessageCli.PRINT_END_GAME.printMessage(player);
+      } else {
+        MessageCli.PRINT_END_GAME_TIE.printMessage("Draw");
+      }
+    }
   }
 }
