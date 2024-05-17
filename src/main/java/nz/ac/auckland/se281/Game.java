@@ -16,10 +16,12 @@ public class Game {
   private Robot robot;
   private Choice choice;
   private List<Choice> history;
+  private List<String> robotWins;
 
   public void newGame(Difficulty difficulty, Choice choice, String[] options) {
 
     history = new ArrayList<>();
+    robotWins = new ArrayList<>();
     roundNumber = 0;
 
     player = options[0];
@@ -45,7 +47,21 @@ public class Game {
 
     // Check difficulty of robot and change strategy if needed
     if (robot instanceof MediumBot && roundNumber == 4) {
+
+      // For medium difficulty we change the strategy to TopStrategy after 3 rounds
       ((MediumBot) robot).setStrategy(new TopStrategy(history, choice));
+
+    } else if (robot instanceof HardBot && roundNumber > 3) {
+
+      // For hard difficulty we change the strategy based on the outcome of the previous round
+      if (robotWins.get(robotWins.size()-1).equals("Lose")) {
+        // Check what strategy the robot is using and change it to the opposite
+        if (((HardBot) robot).getStrategy() instanceof TopStrategy) {
+          ((HardBot) robot).setStrategy(new RandomStrategy());
+        } else if (((HardBot) robot).getStrategy() instanceof RandomStrategy){
+          ((HardBot) robot).setStrategy(new TopStrategy(history, choice));
+        }
+      }
     }
 
     // Request for robot's input
@@ -67,9 +83,11 @@ public class Game {
         if (Utils.isEven(sumOfValues)) {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(
               Integer.toString(sumOfValues), "EVEN", player);
+          robotWins.add("Lose");
         } else {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(
               Integer.toString(sumOfValues), "ODD", robot.getModel());
+          robotWins.add("Win");
         }
         break;
 
@@ -77,9 +95,11 @@ public class Game {
         // If sum is odd, player wins
         if (Utils.isOdd(sumOfValues)) {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sumOfValues), "ODD", player);
+          robotWins.add("Lose");
         } else {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(
               Integer.toString(sumOfValues), "EVEN", robot.getModel());
+          robotWins.add("Win");
         }
         break;
     }
