@@ -12,7 +12,7 @@ public class RobotFactory {
       case MEDIUM:
         return new MediumBot();
       case HARD:
-        //return new HardBot();
+        // return new HardBot();
     }
     // If possible change later
     return null;

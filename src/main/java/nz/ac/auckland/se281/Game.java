@@ -1,5 +1,7 @@
 package nz.ac.auckland.se281;
 
+import java.util.ArrayList;
+import java.util.List;
 import nz.ac.auckland.se281.Main.Choice;
 import nz.ac.auckland.se281.Main.Difficulty;
 
@@ -13,9 +15,11 @@ public class Game {
   private String player;
   private Robot robot;
   private Choice choice;
+  private List<Choice> history;
 
   public void newGame(Difficulty difficulty, Choice choice, String[] options) {
 
+    history = new ArrayList<>();
     roundNumber = 0;
 
     player = options[0];
@@ -28,7 +32,9 @@ public class Game {
   }
 
   public void play() {
-    int sum;
+
+    int sumOfValues;
+
     roundNumber++;
     // Start the round
     MessageCli.START_ROUND.printMessage(Integer.toString(roundNumber));
@@ -37,30 +43,43 @@ public class Game {
     playerFingers = askPlayerInput();
     MessageCli.PRINT_INFO_HAND.printMessage(player, playerFingers);
 
+    // Check difficulty of robot and change strategy if needed
+    if (robot instanceof MediumBot && roundNumber == 4) {
+      ((MediumBot) robot).setStrategy(new TopStrategy(history, choice));
+    }
+
     // Request for robot's input
     robotFingers = robot.getRobotOutput();
     MessageCli.PRINT_INFO_HAND.printMessage(robot.getModel(), robotFingers);
 
+    // Save the player choice for TOP strategy
+    if (Utils.isEven(Integer.parseInt(playerFingers))) {
+      history.add(Choice.EVEN);
+    } else {
+      history.add(Choice.ODD);
+    }
+
     // Check the outcome of the round
-    sum = Integer.parseInt(playerFingers) + Integer.parseInt(robotFingers);
+    sumOfValues = Integer.parseInt(playerFingers) + Integer.parseInt(robotFingers);
     switch (choice) {
       case EVEN:
         // If sum is even, player wins
-        if (Utils.isEven(sum)) {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sum), "EVEN", player);
+        if (Utils.isEven(sumOfValues)) {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(
+              Integer.toString(sumOfValues), "EVEN", player);
         } else {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(
-              Integer.toString(sum), "ODD", robot.getModel());
+              Integer.toString(sumOfValues), "ODD", robot.getModel());
         }
         break;
 
       case ODD:
         // If sum is odd, player wins
-        if (Utils.isOdd(sum)) {
-          MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sum), "ODD", player);
+        if (Utils.isOdd(sumOfValues)) {
+          MessageCli.PRINT_OUTCOME_ROUND.printMessage(Integer.toString(sumOfValues), "ODD", player);
         } else {
           MessageCli.PRINT_OUTCOME_ROUND.printMessage(
-              Integer.toString(sum), "EVEN", robot.getModel());
+              Integer.toString(sumOfValues), "EVEN", robot.getModel());
         }
         break;
     }

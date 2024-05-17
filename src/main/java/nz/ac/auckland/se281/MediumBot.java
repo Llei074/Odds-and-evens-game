@@ -1,23 +1,23 @@
 package nz.ac.auckland.se281;
 
-public class MediumBot implements Robot{
-    Strategy strategy;
+public class MediumBot implements Robot {
+  private Strategy strategy;
 
-    public MediumBot(){
-        this.strategy = new RandomStrategy();
-    }
+  public MediumBot() {
+    this.strategy = new RandomStrategy();
+  }
 
-    public void setStrategy(Strategy strategy){
-        this.strategy = strategy;
-    }
+  public void setStrategy(Strategy strategy) {
+    this.strategy = strategy;
+  }
 
-    @Override
-    public String getRobotOutput() {
-        return strategy.getAction();
-    }
+  @Override
+  public String getRobotOutput() {
+    return strategy.getAction();
+  }
 
-    @Override
-    public String getModel() {
-        return model;
-    }
+  @Override
+  public String getModel() {
+    return model;
+  }
 }
