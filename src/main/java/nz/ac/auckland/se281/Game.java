@@ -92,24 +92,25 @@ public class Game {
     robotWins.add(roundOutcome(sumOfValues));
   }
 
-  public void endGame() {}
-
-  public void showStats() {
-    int robotWins = 0;
-
+  public void endGame() {
+    // Check if the game is running
     if (!gameRunning) {
       MessageCli.GAME_NOT_STARTED.printMessage();
       return;
     }
 
-    for (String outcome : this.robotWins) {
-      if (outcome.equals("win")) {
-        robotWins++;
-      }
+    // End the game
+    gameRunning = false;
+    printPlayerWins();
+  }
+
+  public void showStats() {
+    if (!gameRunning) {
+      MessageCli.GAME_NOT_STARTED.printMessage();
+      return;
     }
 
-    MessageCli.PRINT_PLAYER_WINS.printMessage(player, Integer.toString(roundNumber - robotWins), Integer.toString(robotWins));
-    MessageCli.PRINT_PLAYER_WINS.printMessage(robot.getModel(), Integer.toString(robotWins), Integer.toString(roundNumber - robotWins));
+    printPlayerWins();
   }
 
   public String askPlayerInput() {
@@ -159,5 +160,19 @@ public class Game {
         // Inaccessable code
         return "Draw";
     }
+  }
+
+  public void printPlayerWins() {
+    int robotWins = 0;
+    for (String outcome : this.robotWins) {
+      if (outcome.equals("win")) {
+        robotWins++;
+      }
+    }
+
+    MessageCli.PRINT_PLAYER_WINS.printMessage(
+        player, Integer.toString(roundNumber - robotWins), Integer.toString(robotWins));
+    MessageCli.PRINT_PLAYER_WINS.printMessage(
+        robot.getModel(), Integer.toString(robotWins), Integer.toString(roundNumber - robotWins));
   }
 }
