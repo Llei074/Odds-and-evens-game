@@ -8,11 +8,22 @@ public class TopStrategy implements Strategy {
   private List<Choice> history;
   private Choice winningChoice;
 
+  /**
+   * Initializes the class with the history of the player and the choice that determines whether the
+   * player wins.
+   *
+   * @param history the history of the player choices
+   * @param choice the choice that determines whether the player wins
+   */
   public TopStrategy(List<Choice> history, Choice choice) {
     this.history = history;
     winningChoice = choice;
   }
 
+  /**
+   * getAction returns a number based on the history of the player and the choice determining
+   * whether the player wins
+   */
   public String getAction() {
     int evenChoiceCount = 0;
     int oddChoiceCount = 0;
@@ -27,7 +38,7 @@ public class TopStrategy implements Strategy {
     }
 
     switch (winningChoice) {
-      // For player to win they must have an Even outcome
+        // For player to win they must have an Even outcome
       case EVEN:
         // If we predict the player will choose an Odd number
         // We will choose an Even number
@@ -36,7 +47,7 @@ public class TopStrategy implements Strategy {
         } else {
           return Integer.toString(Utils.getRandomOddNumber());
         }
-      // For player to win they must have an Odd outcome
+        // For player to win they must have an Odd outcome
       case ODD:
         // If we predict the player will choose an Odd number
         // We will choose an Odd number
